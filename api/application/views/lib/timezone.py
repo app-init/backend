@@ -1,0 +1,26 @@
+from flask import g
+from datetime import datetime, timedelta
+from pytz import timezone
+import pytz
+
+import lib.settings.get as get_user_setting
+import lib.settings.set as set_user_setting
+
+def check_user_timezone(request, manager):
+   if "Cee-Tools-Timezone" in request.headers:
+      tz = request.headers['Cee-Tools-Timezone']
+      user_timezone = timezone(tz)
+
+      current = datetime.now(user_timezone)
+      tz_offset = current.utcoffset().total_seconds() / 60 / 60
+
+      setting = get_user_setting.call(name="Timezone", uid=g.session.uid, application="system", output="uid")
+
+      if len(setting) < 1:
+         now = datetime.now(pytz.timezone(tz))
+         setting = {
+            "name": "Timezone",
+            "value": "%s (%s %s)" % (tz, now.tzname(), tz_offset),
+         }
+
+         set_user_setting.call(**setting)

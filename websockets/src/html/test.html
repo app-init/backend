@@ -1,0 +1,110 @@
+<div class="col-lg-12">
+  <div class="ibox ">
+    <div class="ibox-title">
+        <h5>Notification test out</h5>
+    </div>
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                <label for="title">Message Title</label>
+                <input id="title" type="text" class="form-control" placeholder="Title here ...">
+              </div>
+              <div class="form-group">
+                <label for="messageBody">Message body</label>
+                <textarea class="form-control" id="messageBody" rows="4" placeholder="Message body ..."></textarea>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox" for="priorityone">
+                    <input id="priorityone" type="checkbox" value="checked" class="input-mini" checked="">Priority 1
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox" for="priorityotwo">
+                    <input id="priorityotwo" type="checkbox" value="checked" class="input-mini">Priority 2
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox" for="prioritythree">
+                    <input id="prioritythree" type="checkbox" value="checked" class="input-mini">Priority 3
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox" for="priorityfour">
+                    <input id="priorityfour" type="checkbox" value="checked" class="input-mini" checked="">Priority 4
+                </label>
+              </div>
+                <div class="checkbox">
+                  <label class="checkbox" for="priorityfive">
+                      <input id="priorityfive" type="checkbox" value="checked" class="input-mini">Priority 5
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-2">
+              <div class="form-group" id="notificationGroup">
+                  <label>Notification Type</label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="notification" value="success" checked="">Success
+                  </label>
+                </div>
+                <div class="radio">
+                  <label class="radio">
+                      <input type="radio" name="notification" value="info">Info
+                  </label>
+                </div>
+                <div class="radio">
+                  <label class="radio">
+                    <input type="radio" name="notification" value="warning">Warning
+                  </label>
+                </div>
+                <div class="radio">
+                  <label class="radio">
+                    <input type="radio" name="notification" value="error">Error
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" id="applicationGroup">
+                  <label>Application</label>
+                  <div class="radio">
+                    <label>
+                        <input type="radio" name="application" value="bzcompliance" checked="">bzcompliance
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                        <input type="radio" name="application" value="findsbr">findsbr
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                        <input type="radio" name="application" value="to-be-added">to-be-added
+                    </label>
+                  </div> 
+              </div>
+              <div class="form-group" id="forGroup">
+                <label>Recipient</label>
+                <div class="radio">
+                  <label>
+                      <input type="radio" name="for" value="sendEmail" checked="">Send e-mail
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label for="title">recipient e-mail</label>
+                  <input id="title" type="text" class="form-control" placeholder="e-mail address">
+                </div>
+                <div class="form-group">
+                  <label for="for">for which application</label>
+                  <input id="for" type="text" class="form-control" placeholder="application name">
+                </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <button type="button" class="btn btn-primary" id="submitNotification">Submit Notification</button>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
