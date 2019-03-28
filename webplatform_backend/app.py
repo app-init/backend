@@ -29,7 +29,7 @@ from lib.utils.modules import Modules
 from lib.utils.db import Manager
 from lib.utils.config import Settings
 
-settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
+settings = Settings(path="/home/cee-tools/", verify=False)
 modules = Modules(settings)
 manager = modules.manager
 
