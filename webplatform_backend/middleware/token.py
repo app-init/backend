@@ -1,13 +1,13 @@
 # from lib.utils.db import Manager
 from flask import g
-from lib.utils.modules import Modules
-from lib.utils.config import Settings
+# from lib.utils.modules import Modules
+# from lib.utils.config import Settings
 from querystring_parser import parser
-import simplejson, os
+import json, os
 
-settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
-modules = Modules(settings)
-manager = modules.manager
+# settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
+# modules = Modules(settings)
+# manager = modules.manager
 
 def process_request(request):
    ip = request.remote_addr

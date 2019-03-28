@@ -6,12 +6,11 @@ from onelogin.saml2.settings import OneLogin_Saml2_Settings
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
 from onelogin.saml2.constants import OneLogin_Saml2_Constants
 
-import simplejson
+import json
 
-from application.views.lib import debug
-from application.views.lib.responses import *
-from lib.utils.config import Settings
-from lib.utils.db import Manager
+from views.lib.responses import *
+# from lib.utils.config import Settings
+# from lib.utils.db import Manager
 # settings, modules = setup.imports()
 # manager = modules.manager()
 

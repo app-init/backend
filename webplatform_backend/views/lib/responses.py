@@ -1,7 +1,4 @@
-from flask import Response, make_response
-from flask import jsonify
-
-from application.views.lib.jsonify import convert
+from flask import Response
 
 class HttpResponse(Response):
    default_status = 200

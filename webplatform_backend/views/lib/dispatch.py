@@ -1,21 +1,20 @@
 from flask import make_response, send_file, g, Response
 
-import traceback, simplejson, time, bson, os
+import traceback, json, time, bson, os
 
-from application.views.lib import setup
+from views.lib import setup
 
-from lib.utils.config import Settings
-from lib.utils.db import Manager
-from lib.utils.modules import Modules
+# from lib.utils.config import Settings
+# from lib.utils.db import Manager
+# from lib.utils.modules import Modules
+#
+# settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
+# modules = Modules(settings)
+# manager = modules.manager
 
-settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
-modules = Modules(settings)
-manager = modules.manager
-
-from application.views.lib import logging
-from application.views.lib.responses import *
-from application.views.lib.jsonify import convert, convert_old, convert_keys
-from application.views.lib.timezone import check_user_timezone
+from views.lib.responses import *
+from views.lib.jsonify import convert, convert_old, convert_keys
+from views.lib.timezone import check_user_timezone
 
 def handle_response(request, module_path, isFile, **kwargs):
    if not g.session:

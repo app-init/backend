@@ -9,29 +9,37 @@ from flask import Flask, redirect, jsonify, make_response, send_file, request, g
 from querystring_parser import parser
 import urllib
 
-import simplejson, os, traceback
+import json
+import os
+import traceback
 
-sys.stdout = open("/home/cee-tools/logs/debug.log", "a+")
+# sys.stdout = open("/home/cee-tools/logs/debug.log", "a+")
 
 from werkzeug.contrib.fixers import ProxyFix
 
-sys.path.append("/home/cee-tools/api/")
-sys.path.append("/home/cee-tools/apps/")
+# sys.path.append("/home/cee-tools/api/")
+# sys.path.append("/home/cee-tools/apps/")
 
-from application.views import saml
-from application.views.lib import debug, setup, dispatch
-from application.middleware import token, json
-from application.views.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
-from application.views.lib.jsonify import convert
-from application.views.lib.timezone import check_user_timezone
+controller_path = os.path.dirname(os.path.realpath(__file__))
+base_path = os.path.abspath(os.path.join(controller_path))
 
-from lib.utils.modules import Modules
-from lib.utils.db import Manager
-from lib.utils.config import Settings
+if base_path not in sys.path:
+   sys.path.append(base_path)
 
-settings = Settings(path="/home/cee-tools/", verify=False)
-modules = Modules(settings)
-manager = modules.manager
+from views import saml
+from views.lib import setup, dispatch
+from middleware import token, json
+from views.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
+from views.lib.jsonify import convert
+from views.lib.timezone import check_user_timezone
+
+# from lib.utils.modules import Modules
+# from lib.utils.db import Manager
+# from lib.utils.config import Settings
+#
+# settings = Settings(path="/home/cee-tools/", verify=False)
+# modules = Modules(settings)
+# manager = modules.manager
 
 app = Flask(__name__)
 # app.debug = True

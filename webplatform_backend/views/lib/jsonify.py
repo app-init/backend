@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from xmlrpc.client import DateTime
 from bson.objectid import ObjectId
 from werkzeug.datastructures import FileStorage
-import simplejson
+import json
 
 def convert(data):
    if isinstance(data, ObjectId):

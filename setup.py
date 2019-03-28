@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name = "webplatform-backend",
-   version = "1.0.0",
+   version = "1.0.1",
    description = "Backend Flask instance used for a webplatform",
    author = "Matthew Owens",
    author_email = "mowens@redhat.com",
@@ -10,7 +10,18 @@ setup(name = "webplatform-backend",
    include_package_data = True,
    install_requires = [
       'docker',
-      'pymongo'
+      'pymongo',
+      'Flask',
+      'ldap3',
+      'markdown2',
+      'pytz',
+      'gunicorn',
+      'querystring-parser',
+      'xmlsec',
+      'python3_saml'
+   ],
+   dependency_links = [
+      'http://github.com/lost-osiris/python3-saml/tarball/master#egg=python3_saml',
    ],
    python_requires='>=3',
    license='MIT',
