@@ -9,10 +9,10 @@ import json, os
 # modules = Modules(settings)
 # manager = modules.manager
 
-def process_request(request):
+def process_request(request, manager):
    ip = request.remote_addr
 
-   if "login" not in request.cookies and "Cee-Tools-Request" not in request.headers:
+   if "login" not in request.cookies and "Webplatform-Request" not in request.headers:
       return handle_api(manager, request)
    else:
       return handle_fronend_api(manager, request)
@@ -38,7 +38,7 @@ def handle_api(manager, request):
    elif request.method == "POST":
       if request.data != b'':
          if b'SAML' not in request.data:
-            data = simplejson.loads(request.data)
+            data = json.loads(request.data)
             if "token" in data:
                token = data['token']
       else:

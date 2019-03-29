@@ -18,14 +18,16 @@ setup(name = "webplatform-backend",
       'gunicorn',
       'querystring-parser',
       'xmlsec',
-      'python3_saml'
+      'python3_saml',
+      'webplatform-cli',
+      'gevent',
+      'socketIO-client'
    ],
    dependency_links = [
       'http://github.com/lost-osiris/python3-saml/tarball/master#egg=python3_saml',
    ],
    python_requires='>=3',
    license='MIT',
-   # scripts = ["webplatform_backend/webplatform-cli"],
    long_description = """TODO""",
    classifiers = [
        "Programming Language :: Python :: 3",

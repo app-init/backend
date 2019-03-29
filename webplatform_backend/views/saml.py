@@ -59,7 +59,7 @@ def get_certs(settings):
 def setup_auth(request):
    settings = Settings()
    saml_config_file = open(settings.get_config("flask")['saml-settings'] + "/settings.json")
-   saml_config = simplejson.load(saml_config_file)
+   saml_config = son.load(saml_config_file)
    saml_config_file.close()
 
    check = request.form.get("SAMLResponse", None)

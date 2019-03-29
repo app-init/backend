@@ -18,7 +18,7 @@ from views.lib.timezone import check_user_timezone
 
 def handle_response(request, module_path, isFile, **kwargs):
    if not g.session:
-      return HttpResponseUnauthorized(simplejson.dumps({"message": "Unauthorized to api. Either authenticate with saml or send an api token"}))
+      return HttpResponseUnauthorized(json.dumps({"message": "Unauthorized to api. Either authenticate with saml or send an api token"}))
 
    check_user_timezone(request, manager)
 
@@ -39,7 +39,7 @@ def handle_response(request, module_path, isFile, **kwargs):
          response.headers['Content-Length'] = c.length
          response.headers['Content-Disposition'] = "attachment; filename=%s" % c.filename
       else:
-         response_data = simplejson.dumps(c, default=convert, encoding="utf-8")
+         response_data = json.dumps(c, default=convert, encoding="utf-8")
          response = HttpResponse(response_data)
 
    elif result['error']['type'] == "forbidden":
@@ -49,19 +49,19 @@ def handle_response(request, module_path, isFile, **kwargs):
       response = result['error']['response']
 
    elif result['error']['type'] == "module-exist":
-      response = HttpResponseBadRequest(simplejson.dumps({"message": "api module doesn't exist"}))
+      response = HttpResponseBadRequest(json.dumps({"message": "api module doesn't exist"}))
 
    elif result['error']['type'] == "exception":
       if instance != "devel":
          if result['error']['exception_type'] == "KeyError":
-            response = HttpResponse(simplejson.dumps({"message": "Invalid parameters"}))
+            response = HttpResponse(json.dumps({"message": "Invalid parameters"}))
          else:
-            response = HttpResponse(simplejson.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
+            response = HttpResponse(json.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
       else:
          raise result['error']['exception']
 
    else:
-      response = HttpResponse(simplejson.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
+      response = HttpResponse(json.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
 
    if result['error'] != None and "response" in result['error']:
        del result['error']['response']
@@ -122,7 +122,7 @@ def check_errors(request, module_path, **kwargs):
                'args': request.args,
                'data': request.data,
             },
-            'kwargs': simplejson.dumps(kwargs, default=convert, encoding="utf-8"),
+            'kwargs': json.dumps(kwargs, default=convert, encoding="utf-8"),
             'cookies': request.cookies,
          }
       }
@@ -163,7 +163,7 @@ def logging(request, response, module_path, result, **kwargs):
             'args': request.args,
             'data': request.data,
          },
-         'kwargs': simplejson.dumps(kwargs, default=convert, encoding="utf-8"),
+         'kwargs': json.dumps(kwargs, default=convert, encoding="utf-8"),
          'cookies': request.cookies,
       },
       'response': {

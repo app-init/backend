@@ -1,5 +1,4 @@
 from lib.imports.default import *
-import simplejson
 
 admin = True
 

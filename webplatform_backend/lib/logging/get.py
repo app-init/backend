@@ -1,5 +1,5 @@
 from lib.imports.default import *
-import simplejson
+import json
 
 admin = True
 
@@ -17,7 +17,7 @@ def call(*args, **kwargs):
    for log in db.logs.aggregate( pipeline ):
       # remove the list of parent modules
       del log['parent_modules']
-      log['request']['kwargs'] = simplejson.loads(log['request']['kwargs'])
+      log['request']['kwargs'] = json.loads(log['request']['kwargs'])
       output.append(log)
 
    if not output:

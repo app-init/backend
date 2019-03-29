@@ -32,13 +32,15 @@ from middleware import token, json
 from views.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
 from views.lib.jsonify import convert
 from views.lib.timezone import check_user_timezone
+from lib.utils.modules import Modules
 
-# from lib.utils.modules import Modules
-# from lib.utils.db import Manager
-# from lib.utils.config import Settings
-#
-# settings = Settings(path="/home/cee-tools/", verify=False)
-# modules = Modules(settings)
+from webplatform_cli.lib.config import Settings
+from webplatform_cli.lib.db import Manager
+
+manager = Manager()
+settings = Settings(path=base_path, verify=False)
+
+modules = Modules(settings, manager)
 # manager = modules.manager
 
 app = Flask(__name__)
@@ -50,7 +52,7 @@ app.use_x_sendfile = True
 def token_middleware():
    manager.set_hostname(request.host)
 
-   session = token.process_request(request)
+   session = token.process_request(request, manager)
 
    if session != None:
       manager.set_user_uid(session.uid)
@@ -81,15 +83,15 @@ def metadata():
       is_config = request.args.get("config", False)
       if is_config:
          config_file = open(settings.get_config("flask")['saml-settings'] + "/settings.json")
-         config = simplejson.load(config_file)
+         config = json.load(config_file)
          config['sp']['assertionConsumerService']['url'] = url
          config_file.close()
 
          config_file = open(settings.get_config("flask")['saml-settings'] + "/advanced_settings.json")
-         advanced_config = simplejson.load(config_file)
+         advanced_config = json.load(config_file)
          config_file.close()
 
-         return HttpResponse(simplejson.dumps({"config": config, "advanced": advanced_config}, indent=2))
+         return HttpResponse(json.dumps({"config": config, "advanced": advanced_config}, indent=2))
 
    return saml.metadata(request)
 
@@ -102,7 +104,7 @@ def api(path):
       if "cee-tools-request" in request.headers and \
          request.data != b'':
 
-         kwargs = simplejson.loads(request.data)
+         kwargs = json.loads(request.data)
 
          if 'token' in kwargs:
             del kwargs['token']
@@ -160,13 +162,13 @@ def api(path):
                   'args': request.args,
                   'data': request.data,
                },
-               'kwargs': simplejson.dumps(kwargs, default=convert, encoding="utf-8"),
+               'kwargs': json.dumps(kwargs, default=convert, encoding="utf-8"),
                'cookies': request.cookies,
             }
          },
       }
 
-      response = HttpResponseInternalServerError(simplejson.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
+      response = HttpResponseInternalServerError(json.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
       dispatch.logging(request, response, module_path, log, **kwargs)
 
       if settings.get_instance() == "devel":
@@ -183,10 +185,10 @@ def upload():
 
    form_data = request.form.get('data')
    if  form_data != None:
-      form_data =  simplejson.loads(form_data)
+      form_data =  json.loads(form_data)
 
    if len(files) == 0 and 'url' not in form_data:
-      return HttpResponseBadRequest(simplejson.dumps({"message": "Did not POST a file"}))
+      return HttpResponseBadRequest(json.dumps({"message": "Did not POST a file"}))
 
    kwargs = form_data
    kwargs['uid'] = g.session.uid
