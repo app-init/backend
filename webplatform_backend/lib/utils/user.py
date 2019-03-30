@@ -1,7 +1,7 @@
 from webplatform_cli.lib.db import dbManager
 from lib.utils.sessions import Session
 
-class User:
+class BaseUser:
    def __init__(self, uid):
       self.manager = dbManager()
       self.sessions = Sessions(self.manager.db("webplatform"))

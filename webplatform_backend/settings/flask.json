@@ -6,5 +6,6 @@
   "api": {
     "rel": true,
     "path": "lib/"
-  }
+  },
+  "user-package": "services.ldap.auth"
 }
