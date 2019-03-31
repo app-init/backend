@@ -82,12 +82,12 @@ def metadata():
    if len(request.args) > 0:
       is_config = request.args.get("config", False)
       if is_config:
-         config_file = open(settings.get_config("flask")['saml-settings'] + "/settings.json")
+         config_file = open(settings.get_config("flask")['saml-settings'] + "/saml.json")
          config = json.load(config_file)
          config['sp']['assertionConsumerService']['url'] = url
          config_file.close()
 
-         config_file = open(settings.get_config("flask")['saml-settings'] + "/advanced_settings.json")
+         config_file = open(settings.get_config("flask")['saml-settings'] + "/saml-advanced.json")
          advanced_config = json.load(config_file)
          config_file.close()
 
@@ -101,7 +101,7 @@ def api(path):
    module_path = ".".join([_f for _f in path.replace("-", "_").split("/") if _f])
 
    if request.method == "POST":
-      if "cee-tools-request" in request.headers and \
+      if "webplatform-request" in request.headers and \
          request.data != b'':
 
          kwargs = json.loads(request.data)
