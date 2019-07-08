@@ -26,12 +26,14 @@ base_path = os.path.abspath(os.path.join(controller_path))
 if base_path not in sys.path:
    sys.path.append(base_path)
 
-from views import saml
-from views.lib import setup, dispatch
-from middleware import token, json
-from views.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
-from views.lib.jsonify import convert
-from views.lib.timezone import check_user_timezone
+from views import dispatch
+from views.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
+from views.jsonify import convert
+from views.timezone import check_user_timezone
+from middleware import json
+
+from webplatform_auth.middleware import token
+
 from lib.utils.modules import Modules
 
 from webplatform_cli.lib.config import Settings
@@ -59,41 +61,6 @@ def token_middleware():
 
    g.settings = settings
    g.session = session
-
-@app.route("/metadata")
-def metadata():
-   protocol = request.headers['X-Forwarded-Proto']
-   port = request.headers['X-Nginx-Port']
-   host = request.headers['Host'].split(":")[0]
-
-   if "X-Nodejs" in request.headers:
-      if "0.0.0.0" in host:
-         host = host.replace("0.0.0.0:8080", "localhost")
-         if "X-Nodejs-Host" in request.headers:
-            host = request.headers['X-Nodejs-Host']
-
-   if port in host:
-      base = (protocol, host)
-      url = '%s://%s/callback/' % base
-   else:
-      base = (protocol, host, port)
-      url = '%s://%s:%s/callback/' % base
-
-   if len(request.args) > 0:
-      is_config = request.args.get("config", False)
-      if is_config:
-         config_file = open(settings.get_config("flask")['saml-settings'] + "/saml.json")
-         config = json.load(config_file)
-         config['sp']['assertionConsumerService']['url'] = url
-         config_file.close()
-
-         config_file = open(settings.get_config("flask")['saml-settings'] + "/saml-advanced.json")
-         advanced_config = json.load(config_file)
-         config_file.close()
-
-         return HttpResponse(json.dumps({"config": config, "advanced": advanced_config}, indent=2))
-
-   return saml.metadata(request)
 
 @app.route("/api/<path:path>", methods=['POST', 'GET'])
 def api(path):
@@ -211,13 +178,6 @@ def download(file_id):
       isFile
    )
    return dispatch.handle_response(*args, id=file_id)
-
-@app.route("/callback/", methods=['POST', 'GET'])
-def saml_auth():
-   if request.method == 'GET':
-      return saml.get(request)
-   else:
-      return saml.post(request)
 
 if __name__ == "__main__":
    app.run(host='0.0.0.0', port=8080)
