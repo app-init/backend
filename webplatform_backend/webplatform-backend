@@ -1,0 +1,2 @@
+#!/bin/bash
+webplatform-cli --base-path webplatform_backend/container/ $@

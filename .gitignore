@@ -2,10 +2,11 @@
 *.lock
 !/.gitignore
 **/__pycache__/
-**/virtv/
+**virtv/
 __pycache__/
 .DS_Store
 dist/
 !**/README
 *.egg-info/
 build/
+.vscode/
