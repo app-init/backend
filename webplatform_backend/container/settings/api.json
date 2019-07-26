@@ -13,5 +13,8 @@
       "8000": 8000
     },
     "mem_limit": "4g"
-  }
+  },
+  "port": 8080,
+  "user-package": "services.ldap.auth",
+  "user-package-default": "webplatform_auth.user"
 }
