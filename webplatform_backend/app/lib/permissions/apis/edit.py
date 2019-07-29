@@ -4,7 +4,7 @@ import lib.permissions.apis.get as get_api
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    if "id" in kwargs:
       if "safe_name" in kwargs:

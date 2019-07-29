@@ -30,5 +30,6 @@ setup(name = "webplatform-backend",
    # },
    scripts = [
       "webplatform_backend/webplatform-backend"
-   ]
+   ],
+   zip_safe = False
 )

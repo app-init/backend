@@ -2,32 +2,33 @@ from flask import make_response, send_file, g, Response
 
 import traceback, json, time, bson, os
 
-from views.lib import setup
+# from views import setup
 
 # from lib.utils.config import Settings
 # from lib.utils.db import Manager
-# from lib.utils.modules import Modules
+from lib.utils.modules import Modules
 #
 # settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
-# modules = Modules(settings)
 # manager = modules.manager
 
-from views.lib.responses import *
-from views.lib.jsonify import convert, convert_old, convert_keys
-from views.lib.timezone import check_user_timezone
+from webplatform_backend.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseInternalServerError
+from webplatform_backend.middleware.json import convert, convert_keys
+from webplatform_backend.middleware.timezone import check_user_timezone
 
-def handle_response(request, module_path, isFile, **kwargs):
-   if not g.session:
+from webplatform_cli.lib.db import Manager
+
+def handle_response(session_mgr, modules, request, module_path, isFile, **kwargs):
+   session = session_mgr.get()
+   if not session:
       return HttpResponseUnauthorized(json.dumps({"message": "Unauthorized to api. Either authenticate with saml or send an api token"}))
 
-   check_user_timezone(request, manager)
+   check_user_timezone(session, request)
 
-   manager.set_user_uid(g.session.uid)
-   manager.set_permissions(g.session.permissions)
+   devel = "WEBPLATFORM_DEVEL" in os.environ
+   # manager.set_user_uid(session.uid)
+   # manager.set_permissions(session.permissions)
 
-   instance = manager.settings.get_instance()
-
-   result = check_errors(request, module_path, **kwargs)
+   result = check_errors(session_mgr, modules, request, module_path, **kwargs)
 
    response = None
 
@@ -39,7 +40,7 @@ def handle_response(request, module_path, isFile, **kwargs):
          response.headers['Content-Length'] = c.length
          response.headers['Content-Disposition'] = "attachment; filename=%s" % c.filename
       else:
-         response_data = json.dumps(c, default=convert, encoding="utf-8")
+         response_data = json.dumps(c, default=convert, ensure_ascii=False).encode("utf-8")
          response = HttpResponse(response_data)
 
    elif result['error']['type'] == "forbidden":
@@ -52,7 +53,7 @@ def handle_response(request, module_path, isFile, **kwargs):
       response = HttpResponseBadRequest(json.dumps({"message": "api module doesn't exist"}))
 
    elif result['error']['type'] == "exception":
-      if instance != "devel":
+      if devel:
          if result['error']['exception_type'] == "KeyError":
             response = HttpResponse(json.dumps({"message": "Invalid parameters"}))
          else:
@@ -66,10 +67,11 @@ def handle_response(request, module_path, isFile, **kwargs):
    if result['error'] != None and "response" in result['error']:
        del result['error']['response']
 
-   logging(request, response, module_path, result, **kwargs)
+   logging(session_mgr, request, response, module_path, result, **kwargs)
    return response
 
-def check_errors(request, module_path, **kwargs):
+def check_errors(session_mgr, modules, request, module_path, **kwargs):
+   session = session_mgr.get() 
    output = {
       "module": None,
       "error": None,
@@ -88,7 +90,7 @@ def check_errors(request, module_path, **kwargs):
    module = module_data['obj']
    output['module'] = module
 
-   access = modules.check_permissions(module_data, g.session.permissions)
+   access = modules.check_permissions(module_data, session_mgr.get_permissions())
    if not access:
       output['error'] = {"type": "forbidden"}
       return output
@@ -122,14 +124,16 @@ def check_errors(request, module_path, **kwargs):
                'args': request.args,
                'data': request.data,
             },
-            'kwargs': json.dumps(kwargs, default=convert, encoding="utf-8"),
+            'kwargs': json.dumps(kwargs, default=convert, ensure_ascii=False).encode("utf-8"),
             'cookies': request.cookies,
          }
       }
 
    return output
 
-def logging(request, response, module_path, result, **kwargs):
+def logging(session_mgr, request, response, module_path, result, **kwargs):
+   manager = Manager()
+   session = session_mgr.get()
    # get list of parent module chains not including the full path of this one
    parent_modules = []
    module_chain = module_path.split('.')
@@ -148,14 +152,14 @@ def logging(request, response, module_path, result, **kwargs):
       'timestamp': Manager.get_current_time(),
       'path': module_path,
       'parent_modules': parent_modules,
-      'uid': g.session.uid,
+      'uid': session.uid,
       'source_ip': request.remote_addr,
       'method': request.method,
       # don't yet know whether a module exists to get an action from
       'action': None,
       # permissions is represented as a set, so convert it to a list
       # else the database can't encode it
-      'permissions': list(g.session.permissions),
+      'permissions': list(session_mgr.get_permissions()),
       'request': {
          'headers': dict(request.headers),
          'data': {
@@ -163,7 +167,7 @@ def logging(request, response, module_path, result, **kwargs):
             'args': request.args,
             'data': request.data,
          },
-         'kwargs': json.dumps(kwargs, default=convert, encoding="utf-8"),
+         'kwargs': json.dumps(kwargs, default=convert, ensure_ascii=False).encode("utf-8"),
          'cookies': request.cookies,
       },
       'response': {
@@ -183,4 +187,4 @@ def logging(request, response, module_path, result, **kwargs):
 
    # set up db
    db = manager.db("logging")
-   db.logs.insert(log)
+   db.logs.insert_one(log)

@@ -3,7 +3,7 @@ import lib.settings.templates.parse_cursor as parse_cursor
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db('settings')
+   db = manager.db('webplatform')
 
    cursor = db.templates.find()
 

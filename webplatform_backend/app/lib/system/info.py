@@ -4,11 +4,12 @@ def call(**kwargs):
    modules = {}
 
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    cursor = db.apis.find()
    for i in cursor:
       if ".call" not in i['module'] and i['type'] == "module":
+         del i['_id']
          modules[i['module']] = i
 
    exclude = ["call"]

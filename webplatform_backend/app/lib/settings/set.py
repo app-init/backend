@@ -3,7 +3,7 @@ import lib.settings.templates.get as get_template
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("settings")
+   db = manager.db("webplatform")
    uid = manager.get_user_uid()
 
    name = kwargs['name']

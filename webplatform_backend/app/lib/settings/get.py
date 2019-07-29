@@ -4,7 +4,7 @@ import re
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("settings")
+   db = manager.db("webplatform")
 
    q = {}
 

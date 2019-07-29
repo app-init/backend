@@ -7,11 +7,7 @@ sys.dont_write_bytecode = True
 
 from flask import Flask, redirect, jsonify, make_response, send_file, request, g
 from querystring_parser import parser
-import urllib
-
-import json
-import os
-import traceback
+import urllib, json, os, traceback
 
 # sys.stdout = open("/home/cee-tools/logs/debug.log", "a+")
 
@@ -26,13 +22,14 @@ base_path = os.path.abspath(os.path.join(controller_path))
 if base_path not in sys.path:
    sys.path.append(base_path)
 
-from views import dispatch
-from views.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
-from views.jsonify import convert
-from views.timezone import check_user_timezone
-from middleware import json
+from webplatform_backend.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
+
+from webplatform_backend.middleware import dispatch
+from webplatform_backend.middleware.json import convert, convert_keys
+from webplatform_backend.middleware.timezone import check_user_timezone
 
 from webplatform_auth.middleware import token
+from webplatform_auth.lib import SessionManager
 
 from lib.utils.modules import Modules
 
@@ -41,9 +38,9 @@ from webplatform_cli.lib.db import Manager
 
 manager = Manager()
 settings = Settings(path=base_path, verify=False)
+session_mgr = SessionManager(manager)
 
 modules = Modules(settings, manager)
-# manager = modules.manager
 
 app = Flask(__name__)
 # app.debug = True
@@ -52,18 +49,14 @@ app.use_x_sendfile = True
 
 @app.before_request
 def token_middleware():
-   manager.set_hostname(request.host)
-
-   session = token.process_request(request, manager)
-
-   if session != None:
-      manager.set_user_uid(session.uid)
-
-   g.settings = settings
-   g.session = session
+   token.process_request(session_mgr, request=request)
 
 @app.route("/api/<path:path>", methods=['POST', 'GET'])
 def api(path):
+   session = session_mgr.get()
+
+   print('start', session)
+
    isFile = False
    module_path = ".".join([_f for _f in path.replace("-", "_").split("/") if _f])
 
@@ -102,6 +95,8 @@ def api(path):
                kwargs[key] = value
 
    args = (
+      session_mgr,
+      modules,
       request,
       module_path,
       isFile
@@ -121,7 +116,7 @@ def api(path):
             'exception_type': type(e).__name__,
             'stack_trace': traceback.format_exc(),
             'exception': e,
-            'permissions': list(g.session.permissions),
+            'permissions': list(session_mgr.get_permissions()),
             'request': {
                'headers': dict(request.headers),
                'data': {
@@ -129,16 +124,16 @@ def api(path):
                   'args': request.args,
                   'data': request.data,
                },
-               'kwargs': json.dumps(kwargs, default=convert, encoding="utf-8"),
+               'kwargs': json.dumps(kwargs, default=convert, ensure_ascii=False).encode("utf-8"),
                'cookies': request.cookies,
             }
          },
       }
 
       response = HttpResponseInternalServerError(json.dumps({"message": "Server encountered an error. Admin has been notified of this error."}))
-      dispatch.logging(request, response, module_path, log, **kwargs)
+      dispatch.logging(session_mgr, request, response, module_path, log, **kwargs)
 
-      if settings.get_instance() == "devel":
+      if "WEBPLATFORM_DEVEL" in os.environ:
          response = None
 
    return response
@@ -158,10 +153,12 @@ def upload():
       return HttpResponseBadRequest(json.dumps({"message": "Did not POST a file"}))
 
    kwargs = form_data
-   kwargs['uid'] = g.session.uid
+   kwargs['uid'] = session_mgr.get().uid
    kwargs['files'] = files
 
    args = (
+      session_mgr,
+      modules,
       request,
       module_path,
       isFile
@@ -173,6 +170,8 @@ def download(file_id):
    isFile = True
    module_path = "files.download"
    args = (
+      session_mgr,
+      modules,
       request,
       module_path,
       isFile

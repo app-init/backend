@@ -4,7 +4,7 @@ import lib.permissions.users.get as get_user
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    if 'applications' in kwargs:
       old_user = get_user.call(uid=kwargs['id'])

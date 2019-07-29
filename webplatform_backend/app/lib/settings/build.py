@@ -4,7 +4,7 @@ def call(**kwargs):
    manager = Manager()
    settings = Settings()
    modules = Modules(settings=settings)
-   db = manager.db("settings")
+   db = manager.db("webplatform")
    uid = manager.get_user_uid()
 
    cursor = db.templates.find()

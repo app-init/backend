@@ -4,7 +4,7 @@ import lib.permissions.descriptions.get as get_description
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    permission = kwargs["permission"]
    application = kwargs["application"]

@@ -4,7 +4,7 @@ from lib.settings.templates.parse_cursor import get_name
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db('settings')
+   db = manager.db('webplatform')
 
    name = kwargs['name']
    id = kwargs['id']

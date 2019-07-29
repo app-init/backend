@@ -4,7 +4,7 @@ import lib.permissions.users.get as get_user
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    document = {
       "_id": ObjectId(),

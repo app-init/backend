@@ -5,7 +5,7 @@ import lib.permissions.users.add as add_user
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    cursor = db.permissions.find_one({
       "application": kwargs["application"],

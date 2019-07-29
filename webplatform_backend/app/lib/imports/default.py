@@ -1,6 +1,6 @@
 from bson.objectid import ObjectId
-# from lib.utils.db import Manager
+from webplatform_cli.lib.db import Manager
 # from lib.utils.modules import Modules
 # from lib.utils.config import Settings
-from views.lib.responses import *
+from webplatform_backend.lib.responses import *
 import datetime, json

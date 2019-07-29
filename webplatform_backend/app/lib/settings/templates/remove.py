@@ -4,7 +4,7 @@ action = "remove"
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("settings")
+   db = manager.db("webplatform")
 
    template_id = ObjectId(kwargs['id'])
 

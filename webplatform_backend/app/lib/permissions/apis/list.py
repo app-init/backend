@@ -3,7 +3,7 @@ from operator import itemgetter
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
 
    cursor = db.apis.find({})
    output = []

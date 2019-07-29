@@ -120,10 +120,10 @@ class Modules(object):
       else:
          obj['obj'] = imp.load_source(module, obj['path'])
 
-      if module == "base.db.Manager" and self.manager != None:
+      if module == "webplatform_cli.lib.db.Manager" and self.manager != None:
          return self.manager
 
-      elif module == "utils.config.Settings":
+      elif module == "webplatform_cli.lib.config.Settings":
          return self.settings
 
       if permissions == None:
@@ -286,7 +286,7 @@ class Modules(object):
       return self.manager.get_application(module=module)
 
    def __get_permissions(self, module):
-      db = self.manager.db("cee-tools")
+      db = self.manager.db("webplatform")
 
       cursor = db.permissions.find({"module": module})
 

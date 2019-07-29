@@ -3,7 +3,7 @@ import lib.permissions.descriptions.get as get_description
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("webplatform")
    uid = manager.get_user_uid()
    user = db.permissions.find_one({
       "uid": uid,
