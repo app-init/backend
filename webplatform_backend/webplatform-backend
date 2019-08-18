@@ -1,2 +1,5 @@
 #!/bin/bash
-webplatform-cli --base-path webplatform_backend/container/ $@
+#webplatform-cli --base-path webplatform_backend/container/ $@
+export WEBPLATFORM_DEVEL="true"
+
+gunicorn webplatform_backend.app.app:app -c webplatform_backend/container/docker/api/gunicorn.py

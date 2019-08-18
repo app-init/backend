@@ -31,6 +31,7 @@ class Modules(object):
    def __set_class(self, settings, manager):
       Modules.settings = settings
       Modules.base_path = settings.get_config("flask")['api']
+      print(settings.get_config("flask"))
       Modules.manager = manager
       Modules.db = Modules.manager.db("webplatform")
       Modules.db.apis.remove({})

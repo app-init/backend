@@ -55,8 +55,6 @@ def token_middleware():
 def api(path):
    session = session_mgr.get()
 
-   print('start', session)
-
    isFile = False
    module_path = ".".join([_f for _f in path.replace("-", "_").split("/") if _f])
 
