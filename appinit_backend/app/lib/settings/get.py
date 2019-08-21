@@ -4,6 +4,7 @@ import re
 
 def call(**kwargs):
    manager = Manager()
+   session = Session()
    db = manager.db("webplatform")
 
    q = {}
@@ -13,7 +14,7 @@ def call(**kwargs):
          q['uid'] = kwargs['uid']
    else:
       if "permissions" not in kwargs:
-         q['uid'] = manager.get_user_uid()
+         q['uid'] = session.get_uid()
 
    if "name" in kwargs:
       q['name'] = kwargs['name']

@@ -3,8 +3,9 @@ import lib.settings.templates.get as get_template
 
 def call(**kwargs):
    manager = Manager()
+   session = Session()
    db = manager.db("webplatform")
-   uid = manager.get_user_uid()
+   uid = session.get_uid()
 
    name = kwargs['name']
    template = get_template.call(name=name)

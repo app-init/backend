@@ -2,12 +2,16 @@ from lib.imports.default import *
 
 def call(**kwargs):
    manager = Manager()
-   settings = Settings()
-   modules = Modules(settings=settings)
    db = manager.db("webplatform")
-   uid = manager.get_user_uid()
+   
+   session = Session()
+   settings = Settings()
+   permission_mgr = PermissionManager(session.get())
 
-   cursor = db.templates.find()
+   modules = Modules(settings, manager)
+   uid = session.get_uid()
+
+   cursor = db.settings_templates.find()
 
    output = {}
    app_titles = {}
@@ -16,7 +20,7 @@ def call(**kwargs):
       app = t['application']
 
       if "permissions" in t:
-         permissions = manager.get_permissions(app=app)
+         permissions = permission_mgr.get_application(app=app)
          check = [p for p in permissions if p in t['permissions'] or p == "admin"]
 
          if len(check) == 0:

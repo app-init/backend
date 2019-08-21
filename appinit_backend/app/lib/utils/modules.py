@@ -31,7 +31,6 @@ class Modules(object):
    def __set_class(self, settings, manager):
       Modules.settings = settings
       Modules.base_path = settings.get_config("flask")['api']
-      print(settings.get_config("flask"))
       Modules.manager = manager
       Modules.db = Modules.manager.db("webplatform")
       Modules.db.apis.remove({})
@@ -110,7 +109,7 @@ class Modules(object):
          # this is more useful for development
          # it will get called on production if the user requests an api that doesn't exist
          # requst should take longer but that's okay IMO
-         self.__init_modules(self.base_path)
+         self.__init_modules()
          obj = db.apis.find_one({"module": module})
          permissions = db.permissions.find_one({"module": module})
 

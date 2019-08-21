@@ -5,7 +5,7 @@ def call(**kwargs):
    manager = Manager()
    db = manager.db('webplatform')
 
-   cursor = db.templates.find()
+   cursor = db.settings_templates.find()
 
    output = [template for template in cursor]
    return [parse_cursor.call(template) for template in output]

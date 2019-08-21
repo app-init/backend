@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from xmlrpc.client import DateTime
 from bson.objectid import ObjectId
 from werkzeug.datastructures import FileStorage
-from webplatform_auth.lib.session import Session
+from appinit_auth.lib.session import Session
 
 def convert(data):
    if isinstance(data, dict):

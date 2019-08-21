@@ -7,8 +7,8 @@ import lib.settings.get as get_user_setting
 import lib.settings.set as set_user_setting
 
 def check_user_timezone(session, request):
-   if "Webplatform-Timezone" in request.headers:
-      tz = request.headers['Webplatform-Timezone']
+   if "Appinit-Timezone" in request.headers:
+      tz = request.headers['Appinit-Timezone']
       user_timezone = timezone(tz)
 
       current = datetime.now(user_timezone)

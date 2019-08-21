@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages
 
-setup(name = "webplatform-backend",
-   version = "1.0.5",
+setup(name = "app-init-backend",
+   version = "1.0.0",
    description = "Backend Flask instance used for a webplatform",
    author = "Matthew Owens",
    author_email = "mowens@redhat.com",
-   url = "https://github.com/lost-osiris/webplatform-backend",
+   url = "https://github.com/app-init/backend",
    packages = find_packages(),
    include_package_data = True,
    install_requires = [
-      'webplatform-cli',
-      "webplatform-auth",
+      'app-init-cli',
+      "app-init-auth",
       'Flask',
       'markdown2',
       'gunicorn',
@@ -29,7 +29,7 @@ setup(name = "webplatform-backend",
    #     "console_scripts": ["webplatform-=webplatform_cli.cli:main"]
    # },
    scripts = [
-      "webplatform_backend/webplatform-backend"
+      "appinit_backend/appinit-backend"
    ],
    zip_safe = False
 )

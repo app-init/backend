@@ -11,11 +11,11 @@ from lib.utils.modules import Modules
 # settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
 # manager = modules.manager
 
-from webplatform_backend.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseInternalServerError
-from webplatform_backend.middleware.json import convert, convert_keys
-from webplatform_backend.middleware.timezone import check_user_timezone
+from appinit_backend.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseInternalServerError
+from appinit_backend.middleware.json import convert, convert_keys
+from appinit_backend.middleware.timezone import check_user_timezone
 
-from webplatform_cli.lib.db import Manager
+from appinit.lib.db import Manager
 
 def handle_response(session_mgr, modules, request, module_path, isFile, **kwargs):
    session = session_mgr.get()
@@ -24,7 +24,7 @@ def handle_response(session_mgr, modules, request, module_path, isFile, **kwargs
 
    check_user_timezone(session, request)
 
-   devel = "WEBPLATFORM_DEVEL" in os.environ
+   devel = "APPINIT_DEVEL" in os.environ
    # manager.set_user_uid(session.uid)
    # manager.set_permissions(session.permissions)
 

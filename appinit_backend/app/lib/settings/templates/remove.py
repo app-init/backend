@@ -9,6 +9,6 @@ def call(**kwargs):
    template_id = ObjectId(kwargs['id'])
 
    db.settings.remove({"t_id": template_id})
-   db.templates.remove({"_id": template_id})
+   db.settings_templates.remove({"_id": template_id})
 
    return True

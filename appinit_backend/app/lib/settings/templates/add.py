@@ -38,6 +38,6 @@ def call(**kwargs):
    if 'isMulti' in kwargs:
       template['isMulti'] = kwargs['isMulti']
 
-   db.templates.insert(template)
+   db.settings_templates.insert(template)
 
    return get_template.call(name=template['name'])

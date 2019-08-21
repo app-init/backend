@@ -26,7 +26,7 @@ def call(**kwargs):
          name = new_name
          updates['$set']['name'] = new_name
 
-      db.templates.update(
+      db.settings_templates.update(
          {
             "_id": ObjectId(id),
          },

@@ -7,14 +7,14 @@ def call(**kwargs):
 
    output = None
    if "name" in kwargs:
-      output = db.templates.find_one(
+      output = db.settings_templates.find_one(
          {
             'name': kwargs['name'],
          }
       )
 
    if "id" in kwargs:
-      output = db.templates.find_one(
+      output = db.settings_templates.find_one(
          {
             '_id': ObjectId(kwargs['id']),
          }
