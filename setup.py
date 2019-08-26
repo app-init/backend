@@ -25,11 +25,5 @@ setup(name = "app-init-backend",
        "License :: OSI Approved :: MIT License",
        "Operating System :: OS Independent",
    ],
-   # entry_points={
-   #     "console_scripts": ["webplatform-=webplatform_cli.cli:main"]
-   # },
-   scripts = [
-      "appinit_backend/appinit-backend"
-   ],
    zip_safe = False
 )

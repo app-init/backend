@@ -32,12 +32,12 @@ class Modules(object):
       Modules.settings = settings
       Modules.base_path = settings.get_config("flask")['api']
       Modules.manager = manager
-      Modules.db = Modules.manager.db("webplatform")
+      Modules.db = Modules.manager.db("appinit")
       Modules.db.apis.remove({})
       self.__init_modules()
 
    def check_modules(self):
-      db = self.manager.db("webplatform")
+      db = self.manager.db("appinit")
       apis = db.apis.count()
 
       if apis == 0:
