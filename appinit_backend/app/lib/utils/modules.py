@@ -30,7 +30,7 @@ class Modules(object):
 
    def __set_class(self, settings, manager):
       Modules.settings = settings
-      Modules.base_path = os.path.abspath(os.path.join(os.path.realpath(__file__), "../"))
+      Modules.base_path = os.path.abspath(os.path.join(os.path.realpath(__file__), "../../"))
       Modules.manager = manager
       Modules.db = Modules.manager.db("appinit")
       Modules.db.apis.remove({})
@@ -164,7 +164,7 @@ class Modules(object):
 
       return False
 
-   def __find_modules(self, path, key=None, apps=False):
+   def __find_modules(self, path, key=None, routes=False):
       files = os.listdir(path)
       if key == None:
          base_key = ""
@@ -185,7 +185,7 @@ class Modules(object):
 
             module = {
                "path": file_path,
-               "application": self.__get_application(m_name),
+               "route": self.__get_route(m_name),
                "internal": False,
                "type": "module",
                "child": [],
@@ -219,7 +219,7 @@ class Modules(object):
          m_name = m['module']
          path = m['path']
          module = m
-         application = self.__get_application(m_name)
+         route = self.__get_route(m_name)
          del module['_id']
 
          module_obj = imp.load_source(m_name, path)
@@ -244,7 +244,7 @@ class Modules(object):
 
                parent_module_routine = {
                   "type": "method",
-                  "application": application,
+                  "route": route,
                   "parent": m_name,
                   "internal": module['internal'],
                   "action": module['action'],
@@ -284,8 +284,8 @@ class Modules(object):
    def __add_module(self, module):
       self.db.apis.update({"module": module['module']}, {"$set": module}, upsert=True)
 
-   def __get_application(self, module=None):
-      return self.manager.get_application(module=module)
+   def __get_route(self, module=None):
+      return self.manager.get_route(module=module)
 
    def __get_permissions(self, module):
       db = self.manager.db("appinit")
@@ -302,7 +302,7 @@ class Modules(object):
             sys.exit()
 
    def check_permissions(self, module, permissions):
-      app = module['application']
+      route = module['route']
 
       # print(path, app, module['permissions'], permissions)
       # when api requested has no permissions
@@ -310,15 +310,15 @@ class Modules(object):
          return True
 
       # user has no application permissions but requested api HAS permissions set
-      if not(app in permissions) and len(module['permissions']) > 0:
+      if not(route in permissions) and len(module['permissions']) > 0:
          return False
 
       # user as admin permissions on requested api
-      if "admin" in permissions[app]:
+      if "admin" in permissions[route]:
          return True
 
       # check if user has requested api permissions
-      for i in set(permissions[app]):
+      for i in set(permissions[route]):
          for j in module['permissions']:
             if i == j:
                return True
