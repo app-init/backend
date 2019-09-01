@@ -1,6 +1,7 @@
 from bson.objectid import ObjectId
 # from lib.permissions.apis import list as apiList
 import os, inspect, imp, datetime, copy, sys
+import importlib
 
 class Modules(object):
    __modules = {}
@@ -147,7 +148,7 @@ class Modules(object):
       return output
 
    def __ignore(self, name):
-      ignore = [".pyc", ".json", ".txt", "__init__.py"]
+      ignore = [".pyc", ".json", ".txt", "__init__.py", ".md"]
 
       ignore_modules = ["compliance", "base", "websockets"]
 
@@ -205,8 +206,23 @@ class Modules(object):
 
    def __init_modules(self):
       routes = self.settings.get_variable("route-configs")
-      self.__find_modules(self.base_path)
+      
+      for route in routes:
+         path = route['api']['path']
+         name = route['api']['name']
 
+         if path not in sys.path:
+            sys.path.append(path)
+         
+         spec = importlib.util.spec_from_file_location(name, path + '__init__.py')
+         module_obj = importlib.util.module_from_spec(spec)
+         spec.loader.exec_module(module_obj)
+
+         sys.modules[name] = module_obj
+
+         self.__find_modules(path)
+
+      self.__find_modules(self.base_path)
       self.__setup_modules()
 
    def __setup_modules(self):
@@ -222,7 +238,9 @@ class Modules(object):
          route = self.__get_route(m_name)
          del module['_id']
 
-         module_obj = imp.load_source(m_name, path)
+         spec = importlib.util.spec_from_file_location(m_name, path)
+         module_obj = importlib.util.module_from_spec(spec)
+         spec.loader.exec_module(module_obj)
 
          if getattr(module_obj, "action", None) != None:
             module['action'] = module_obj.action
