@@ -2,15 +2,12 @@ from lib.imports.default import *
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
-
-   permission = kwargs["permission"]
-   application = kwargs["application"]
+   db = manager.db("appinit")
 
    cursor = db.permissions.find_one(
       {
-         "pid": permission,
-         "application": application,
+         "pid": kwargs['permission'],
+         "route": kwargs['route'],
       }
    )
 

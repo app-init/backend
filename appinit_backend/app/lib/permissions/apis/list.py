@@ -3,7 +3,7 @@ from operator import itemgetter
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    cursor = db.apis.find({})
    output = []
@@ -23,4 +23,4 @@ def call(**kwargs):
             j['permissions'] = i['permissions']
             output[idx] = j
 
-   return sorted(output, key=itemgetter('application'))
+   return sorted(output, key=itemgetter('route'))

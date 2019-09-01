@@ -4,7 +4,7 @@ def call(**kwargs):
    modules = {}
 
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    cursor = db.apis.find()
    for i in cursor:

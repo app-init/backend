@@ -22,22 +22,22 @@ base_path = os.path.abspath(os.path.join(controller_path))
 if base_path not in sys.path:
    sys.path.append(base_path)
 
-from webplatform_backend.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
+from appinit_backend.lib.responses import HttpResponse, HttpResponseBadRequest, HttpResponseInternalServerError
 
-from webplatform_backend.middleware import dispatch
-from webplatform_backend.middleware.json import convert, convert_keys
-from webplatform_backend.middleware.timezone import check_user_timezone
+from appinit_backend.middleware import dispatch
+from appinit_backend.middleware.json import convert, convert_keys
+from appinit_backend.middleware.timezone import check_user_timezone
 
-from webplatform_auth.middleware import token
-from webplatform_auth.lib import SessionManager
+from appinit_auth.middleware import token
+from appinit_auth.lib import SessionManager
 
 from lib.utils.modules import Modules
 
-from webplatform_cli.lib.config import Settings
-from webplatform_cli.lib.db import Manager
+from appinit.lib.config import Settings
+from appinit.lib.db import Manager
 
 manager = Manager()
-settings = Settings(path=base_path, verify=False)
+settings = Settings()
 session_mgr = SessionManager(manager)
 
 modules = Modules(settings, manager)

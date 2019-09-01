@@ -9,7 +9,7 @@ def call(**kwargs):
    uid = manager.get_user_uid()
    user = get_user.call(uid=uid)
 
-   if user is None or len(user['applications']) == 0:
+   if user is None or len(user['routes']) == 0:
       return HttpResponseForbidden()
 
    output = {

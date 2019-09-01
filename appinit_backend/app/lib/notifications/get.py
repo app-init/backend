@@ -2,7 +2,7 @@ from lib.imports.default import *
 
 def call(*args, **kwargs):
    manager = Manager()
-   db = manager.db("cee-tools")
+   db = manager.db("appinit")
 
    uid = kwargs['uid']
 

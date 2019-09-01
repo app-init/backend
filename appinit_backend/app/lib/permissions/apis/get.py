@@ -2,7 +2,7 @@ from lib.imports.default import *
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    cursor = db.permissions.find_one({"module": kwargs["id"]})
    module = manager.parse_cursor_object(cursor)

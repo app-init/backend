@@ -4,7 +4,7 @@ import lib.permissions.apis.get as get_api
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    if "id" in kwargs:
       if "safe_name" in kwargs:
@@ -15,7 +15,7 @@ def call(**kwargs):
       if cursor == None:
          module = {
             "module": kwargs['module'],
-            "application": kwargs['application'],
+            "route": kwargs['route'],
             "permissions": kwargs['permissions']
          }
          db.permissions.insert(module)

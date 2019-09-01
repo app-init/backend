@@ -3,17 +3,17 @@ import lib.permissions.descriptions.get as get_description
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
    uid = manager.get_user_uid()
    user = db.permissions.find_one({
       "uid": uid,
-      "application": kwargs["application"],
+      "route": kwargs["route"],
    })
 
    def is_system_admin(uid):
       data = db.permissions.find_one({
          "uid": uid,
-         "application": "system",
+         "route": "system",
       })
 
       if data is None or 'admin' not in data['permissions']:
@@ -35,7 +35,7 @@ def call(**kwargs):
       },
       {
          "$group": {
-            "_id": "$application",
+            "_id": "$route",
             "users": {
                "$push": {
                   "permissions": "$permissions",
@@ -48,13 +48,13 @@ def call(**kwargs):
 
    cursor = db.permissions.aggregate(pipeline)
 
-   applications = [app for app in cursor if app["_id"] == kwargs["application"]]
+   routes = [route for route in cursor if route["_id"] == kwargs["route"]]
    output = []
 
-   for app in applications:
+   for route in routes:
       result = {}
 
-      for user in app["users"]:
+      for user in route["users"]:
          if "permissions" not in user:
             print(user)
          for perm in user["permissions"]:
@@ -65,7 +65,7 @@ def call(**kwargs):
             result[perm]['users'].append(user["uid"])
 
       for perm in result:
-         result[perm]['description'] = get_description.call(permission=perm, application=kwargs["application"])
+         result[perm]['description'] = get_description.call(permission=perm, route=kwargs["application"])
 
       output.append(result)
 

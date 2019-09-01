@@ -30,7 +30,7 @@ class Modules(object):
 
    def __set_class(self, settings, manager):
       Modules.settings = settings
-      Modules.base_path = settings.get_config("flask")['api']
+      Modules.base_path = os.path.abspath(os.path.join(os.path.realpath(__file__), "../"))
       Modules.manager = manager
       Modules.db = Modules.manager.db("appinit")
       Modules.db.apis.remove({})
@@ -99,7 +99,7 @@ class Modules(object):
       return obj.call(*args, **kwargs)
 
    def get(self, module, data=False, init=None, set_modules=False, imported={}):
-      db = self.manager.db("webplatform")
+      db = self.manager.db("appinit")
 
       obj = db.apis.find_one({"module": module})
       permissions = db.permissions.find_one({"module": module})
@@ -120,10 +120,10 @@ class Modules(object):
       else:
          obj['obj'] = imp.load_source(module, obj['path'])
 
-      if module == "webplatform_cli.lib.db.Manager" and self.manager != None:
+      if module == "appinit.lib.db.Manager" and self.manager != None:
          return self.manager
 
-      elif module == "webplatform_cli.lib.config.Settings":
+      elif module == "appinit.lib.config.Settings":
          return self.settings
 
       if permissions == None:
@@ -137,7 +137,7 @@ class Modules(object):
          return obj['obj']
 
    def get_all_modules(self):
-      db = self.manager.db("webplatform")
+      db = self.manager.db("appinit")
       cursor = db.apis.find()
 
       output = {}
@@ -204,7 +204,9 @@ class Modules(object):
             self.__find_modules(file_path, key=f_name.split("."))
 
    def __init_modules(self):
+      routes = self.settings.get_variable("route-configs")
       self.__find_modules(self.base_path)
+
       self.__setup_modules()
 
    def __setup_modules(self):
@@ -286,7 +288,7 @@ class Modules(object):
       return self.manager.get_application(module=module)
 
    def __get_permissions(self, module):
-      db = self.manager.db("webplatform")
+      db = self.manager.db("appinit")
 
       cursor = db.permissions.find({"module": module})
 

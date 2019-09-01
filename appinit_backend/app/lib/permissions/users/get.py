@@ -2,7 +2,7 @@ from lib.imports.default import *
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    pipeline = [
       {
@@ -15,12 +15,15 @@ def call(**kwargs):
             "_id": "$uid",
             "permissions_list": {
                "$addToSet": {
-                  "application": "$application", "permissions": "$permissions", "permission_id": "$_id",
+                  "route": "$route", 
+                  "permissions": 
+                  "$permissions", 
+                  "permission_id": "$_id",
                },
             },
-            "applications": {
+            "routes": {
                "$addToSet":
-                  "$application",
+                  "$routes",
             }
          },
       },
@@ -33,9 +36,9 @@ def call(**kwargs):
       permissions_obj = {}
       permissions_ids = {}
       for permission in i['permissions_list']:
-         if "application" in permission:
-            permissions_obj[permission['application']] = permission['permissions']
-            permissions_ids[permission['application']] = permission['permission_id']
+         if "route" in permission:
+            permissions_obj[permission['route']] = permission['permissions']
+            permissions_ids[permission['route']] = permission['permission_id']
 
       i['permissions_obj'] = permissions_obj
       i['permissions_ids'] = permissions_ids

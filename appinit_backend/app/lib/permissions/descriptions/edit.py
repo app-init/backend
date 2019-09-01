@@ -1,5 +1,5 @@
 from lib.imports.default import *
-import lib.permissions.applications.get as get_application
+import lib.permissions.routes.get as get_route
 
 
 def call(**kwargs):
@@ -7,13 +7,13 @@ def call(**kwargs):
    db = manager.db("webplatform")
 
    permission = kwargs["permission"]
-   application = kwargs["application"]
+   route = kwargs["route"]
    description = kwargs["description"]
 
    db.permissions.update(
       {
          "pid": permission,
-         "application": application,
+         "route": route,
       },
       {
          "$set": {
@@ -23,4 +23,4 @@ def call(**kwargs):
       upsert=True
    )
 
-   return get_application.call(application=application)
+   return get_route.call(route=route)
