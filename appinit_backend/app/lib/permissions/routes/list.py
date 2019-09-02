@@ -3,8 +3,10 @@ import appinit_backend.app.lib.permissions.users.get as get_user
 
 def call(**kwargs):
    manager = Manager()
+   session = Session()
+
    db = manager.db("appinit")
-   uid = manager.get_user_uid()
+   uid = session.get_uid()
    user = get_user.call(uid=uid)
    user_permissions = user["permissions_obj"]
 
@@ -35,7 +37,7 @@ def call(**kwargs):
    is_sys_admin = is_system_admin(uid)
 
    for route in cursor:
-      route_name = app["_id"]
+      route_name = route["_id"]
 
       # not listing app permissions if user is not a sysadmin and
       # does not have admin privileges to the app

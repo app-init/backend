@@ -16,14 +16,13 @@ def call(**kwargs):
             "permissions_list": {
                "$addToSet": {
                   "route": "$route", 
-                  "permissions": 
-                  "$permissions", 
+                  "permissions": "$permissions", 
                   "permission_id": "$_id",
                },
             },
             "routes": {
                "$addToSet":
-                  "$routes",
+                  "$route",
             }
          },
       },

@@ -3,8 +3,11 @@ import appinit_backend.app.lib.permissions.descriptions.get as get_description
 
 def call(**kwargs):
    manager = Manager()
+   session = Session()
+
    db = manager.db("appinit")
-   uid = manager.get_user_uid()
+   uid = session.get_uid()
+   
    user = db.permissions.find_one({
       "uid": uid,
       "route": kwargs["route"],
@@ -65,7 +68,7 @@ def call(**kwargs):
             result[perm]['users'].append(user["uid"])
 
       for perm in result:
-         result[perm]['description'] = get_description.call(permission=perm, route=kwargs["application"])
+         result[perm]['description'] = get_description.call(permission=perm, route=kwargs["route"])
 
       output.append(result)
 

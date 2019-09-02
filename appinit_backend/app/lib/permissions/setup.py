@@ -5,8 +5,9 @@ import appinit_backend.app.lib.permissions.users.get as get_user
 
 def call(**kwargs):
    manager = Manager()
+   session = Session()
 
-   uid = manager.get_user_uid()
+   uid = session.get_uid()
    user = get_user.call(uid=uid)
 
    if user is None or len(user['routes']) == 0:
