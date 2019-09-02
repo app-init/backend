@@ -9,12 +9,7 @@ from flask import Flask, redirect, jsonify, make_response, send_file, request, g
 from querystring_parser import parser
 import urllib, json, os, traceback
 
-# sys.stdout = open("/home/cee-tools/logs/debug.log", "a+")
-
 from werkzeug.contrib.fixers import ProxyFix
-
-# sys.path.append("/home/cee-tools/api/")
-# sys.path.append("/home/cee-tools/apps/")
 
 controller_path = os.path.dirname(os.path.realpath(__file__))
 base_path = os.path.abspath(os.path.join(controller_path))

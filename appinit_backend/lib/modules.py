@@ -220,12 +220,15 @@ class Modules(object):
 
          sys.modules[name] = module_obj
 
-         self.__find_modules(path)
+         self.__find_modules(path[:len(path) - 1], key=[name])
 
       self.__find_modules(self.base_path)
       self.__setup_modules()
 
    def __setup_modules(self):
+      routes = self.settings.get_variable('route-configs')
+      route_paths = [i['api']['path'] for i in routes]
+
       cursor = self.db.apis.find()
 
       for m in cursor:
@@ -277,18 +280,19 @@ class Modules(object):
 
             elif inspect.ismodule(obj):
                member_path = False
-               try:
 
-                  member_path = obj.__file__.replace(self.base_path, "")[1:]
-                  member_path = member_path.replace("/", ".")
+               if "__file__" not in dir(obj):
+                  continue
 
-                  if "python" in member_path:
-                     member_path = False
-                  else:
-                     member_path = member_path.replace(".py", "")
+               if self.base_path in obj.__file__:
+                  member_path = self.__child_module_path(obj, self.base_path)
+               else:
+                  for route in routes:
+                     route_path = route['api']['path']
+                     key = route['api']['name']
 
-               except Exception as e:
-                  pass
+                     if route_path in obj.__file__:
+                        member_path = self.__child_module_path(obj, route_path, key=key)
 
                if not member_path:
                   continue
@@ -298,6 +302,25 @@ class Modules(object):
          module['child'] = list({v['name']:v for v in module['child']}.values())
 
          self.__add_module(module)
+
+   def __child_module_path(self, obj, path, key=None):
+      try:
+         if path[len(path)] == "/":
+            path = path[:len(path) - 1]
+
+         member_path = obj.__file__.replace(path, "")[1:]
+         member_path = member_path.replace("/", ".")
+
+         if "python" in member_path:
+            return False
+         else:
+            if key:
+               return "%s.%s" % (key, member_path.replace(".py", ""))
+
+            return member_path.replace(".py", "")
+
+      except Exception as e:
+         return False
 
    def __add_module(self, module):
       self.db.apis.update({"module": module['module']}, {"$set": module}, upsert=True)

@@ -1,4 +1,0 @@
-python setup.py -q install
-export APPINIT_DEVEL="true"
-
-gunicorn appinit_backpend.app.app:app -c appinit_auth/container/docker/backend/gunicorn.p
