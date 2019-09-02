@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.files.meta as meta
+from appinit_backend.lib.imports import *
+from . import meta
 
 
 def call(**kwargs):

@@ -1,6 +1,6 @@
-from lib.imports.default import *
-import lib.notifications.email as email_notifications
-import lib.files.meta as file_meta
+from appinit_backend.lib.imports import *
+from appinit_backend.lib.notifications import email
+from . import meta
 
 
 def call(action, fid, **kwargs):
@@ -11,7 +11,7 @@ def call(action, fid, **kwargs):
 
    if fid is None:
       raise Exception
-   meta = file_meta.call(id=fid)
+   meta = meta.call(id=fid)
    users.add(meta["uid"])
    if action == "remove":
       title = "Removed unassigned file '%s'" % meta["filename"]
@@ -25,4 +25,4 @@ def call(action, fid, **kwargs):
                   form where you uploaded this file if you wish to keep it \
                   uploaded.""" % (manager.get_hostname(), fid, meta["filename"], kwargs["days"], kwargs["days_till_remove"])
 
-   email_notifications.call("Files", title, users, body)
+   email.call("Files", title, users, body)

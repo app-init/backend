@@ -1,6 +1,5 @@
-from lib.imports.default import *
-import lib.files.edit as files_edit
-#
+from appinit_backend.lib.imports import *
+from . import edit as files_edit
 
 def call(**kwargs):
    kwargs["isAttach"] = True

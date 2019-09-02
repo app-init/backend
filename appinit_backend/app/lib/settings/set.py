@@ -1,10 +1,10 @@
-from lib.imports.default import *
-import lib.settings.templates.get as get_template
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.settings.templates.get as get_template
 
 def call(**kwargs):
    manager = Manager()
    session = Session()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
    uid = session.get_uid()
 
    name = kwargs['name']

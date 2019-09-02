@@ -3,10 +3,11 @@ import traceback
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from lib.imports.default import *
-import lib.users.get as get_user
-import lib.notifications.schedule_email as send_email
-import lib.settings.get as get_user_settings
+from ..imports import *
+from . import schedule_email as send_email
+
+from appinit_backend.app.lib.settings import get as get_user_settings
+from appinit_backend.app.lib.users import get as get_user
 
 internal = True
 

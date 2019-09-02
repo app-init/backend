@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.jobs.scheduled.add as add_job
+from appinit_backend.lib.imports import *
+from appinit_backend.app.lib.jobs.scheduled import add as add_job
 
 permissions = "jobAdmin"
 

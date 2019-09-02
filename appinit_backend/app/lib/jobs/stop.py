@@ -1,4 +1,4 @@
-from lib.imports.default import *
+from appinit_backend.lib.imports import *
 permissions = ["admin", "jobAdmin"]
 
 def call(**kwargs):

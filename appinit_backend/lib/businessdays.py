@@ -1,5 +1,5 @@
 import datetime
-import lib.settings.get as get_setting
+import appinit_backend.app.lib.settings.get as get_setting
 
 def get_stale_days():
    kwargs = {

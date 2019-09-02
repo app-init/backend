@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
 
-import lib.settings.get as get_user_setting
-import lib.settings.set as set_user_setting
+import appinit_backend.app.lib.settings.get as get_user_setting
+import appinit_backend.app.lib.settings.set as set_user_setting
 
 def check_user_timezone(session, request):
    if "Appinit-Timezone" in request.headers:

@@ -1,10 +1,10 @@
-from lib.imports.default import *
-import lib.settings.templates.get as get_template
-from lib.settings.templates.parse_cursor import get_name
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.settings.templates.get as get_template
+from appinit_backend.app.lib.settings.templates.parse_cursor import get_name
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db('webplatform')
+   db = manager.db('appinit')
 
    template = {
       '_id': ObjectId(),

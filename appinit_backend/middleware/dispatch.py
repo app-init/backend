@@ -6,7 +6,7 @@ import traceback, json, time, bson, os
 
 # from lib.utils.config import Settings
 # from lib.utils.db import Manager
-from lib.utils.modules import Modules
+from appinit_backend.lib.modules import Modules
 #
 # settings = Settings(path="/home/cee-tools/", verify=False, instance=os.environ['CEE_TOOLS_INSTANCE'])
 # manager = modules.manager

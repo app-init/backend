@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.notifications.email as email_notifications
+from appinit_backend.lib.imports import *
+from appinit_backend.lib.notifications import email as email_notifications
 
 
 def call(action, job=None):

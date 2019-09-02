@@ -1,6 +1,5 @@
-from lib.imports.default import *
-import lib.files.notify as files_notify
-
+from appinit_backend.lib.imports import *
+from appinit_backend.lib.files import notify as files_notify
 
 def call(**kwargs):
    from io import StringIO

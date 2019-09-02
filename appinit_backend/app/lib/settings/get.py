@@ -1,11 +1,11 @@
 from flask import g
-from lib.imports.default import *
+from appinit_backend.lib.imports import *
 import re
 
 def call(**kwargs):
    manager = Manager()
    session = Session()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    q = {}
 

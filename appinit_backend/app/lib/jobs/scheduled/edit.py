@@ -1,6 +1,6 @@
-from lib.imports.default import *
-import lib.jobs.scheduled.get as scheduled_get
-import lib.jobs.interval.next as get_next_run_time
+from appinit_backend.lib.imports import *
+from appinit_backend.app.lib.jobs.scheduled import get as scheduled_get
+from appinit_backend.app.lib.jobs.interval import next as get_next_run_time
 
 permissions = "developer"
 action = "edit"

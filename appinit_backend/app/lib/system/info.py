@@ -1,4 +1,4 @@
-from lib.imports.default import *
+from appinit_backend.lib.imports import *
 
 def call(**kwargs):
    modules = {}

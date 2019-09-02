@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.jobs.interval.display as display
+from appinit_backend.lib.imports import *
+from appinit_backend.app.lib.jobs.interval import display
 
 permissions = "developer"
 

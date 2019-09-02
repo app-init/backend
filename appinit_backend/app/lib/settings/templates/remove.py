@@ -1,10 +1,10 @@
-from lib.imports.default import *
+from appinit_backend.lib.imports import *
 
 action = "remove"
 
 def call(**kwargs):
    manager = Manager()
-   db = manager.db("webplatform")
+   db = manager.db("appinit")
 
    template_id = ObjectId(kwargs['id'])
 

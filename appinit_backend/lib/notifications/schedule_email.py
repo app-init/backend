@@ -1,11 +1,11 @@
-from lib.imports.default import *
-import lib.jobs.scheduled.add as schedule_job
-import lib.jobs.scheduled.get as get_job
-import lib.jobs.scheduled.edit as edit_job
+from appinit_backend.lib.imports import *
+from appinit_backend.app.lib.jobs.scheduled import add as schedule_job
+from appinit_backend.app.lib.jobs.scheduled import get as get_job
+from appinit_backend.app.lib.jobs.scheduled import edit as edit_job
+
 from datetime import datetime
 from pytz import timezone
 import smtplib, pytz, time
-
 
 def call(**kwargs):
    job = {

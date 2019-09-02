@@ -31,7 +31,7 @@ from appinit_backend.middleware.timezone import check_user_timezone
 from appinit_auth.middleware import token
 from appinit_auth.lib import SessionManager
 
-from lib.utils.modules import Modules
+from appinit_backend.lib.modules import Modules
 
 from appinit.lib.config import Settings
 from appinit.lib.db import Manager

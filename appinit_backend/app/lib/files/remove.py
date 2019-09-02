@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.files.meta as meta
+from appinit_backend.lib.imports import *
+from . import meta
 
 action = "remove"
 
@@ -12,7 +12,7 @@ def call(**kwargs):
    elif "ids" in kwargs and type(kwargs["ids"]) is list:
       for fid in kwargs["ids"]:
          file_obj = meta.call(id=fid)
-         if not meta.call['isAttached']:
+         if not file_obj['isAttached']:
             __remove(fid)
 
    return True
