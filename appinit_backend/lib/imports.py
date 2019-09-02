@@ -1,7 +1,7 @@
 from bson.objectid import ObjectId
 
-from .responses import *
-from .modules import Modules
+from appinit_backend.lib.responses import *
+from appinit_backend.lib.modules import Modules
 
 from appinit.lib.db import Manager
 from appinit.lib.config import Settings

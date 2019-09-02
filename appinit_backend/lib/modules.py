@@ -31,7 +31,7 @@ class Modules(object):
 
    def __set_class(self, settings, manager):
       Modules.settings = settings
-      Modules.base_path = os.path.abspath(os.path.join(os.path.realpath(__file__), "../../"))
+      Modules.base_path = os.path.abspath(os.path.join(os.path.realpath(__file__), "../../app/lib/"))
       Modules.manager = manager
       Modules.db = Modules.manager.db("appinit")
       Modules.db.apis.remove({})

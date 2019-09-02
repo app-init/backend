@@ -1,7 +1,7 @@
-from lib.imports.default import *
-import lib.permissions.users.list as users_list
-import lib.permissions.apis.list as apis_list
-import lib.permissions.users.get as get_user
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.permissions.users.list as users_list
+import appinit_backend.app.lib.permissions.apis.list as apis_list
+import appinit_backend.app.lib.permissions.users.get as get_user
 
 def call(**kwargs):
    manager = Manager()

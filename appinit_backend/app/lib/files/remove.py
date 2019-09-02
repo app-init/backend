@@ -1,5 +1,5 @@
 from appinit_backend.lib.imports import *
-from . import meta
+from appinit_backend.app.lib.files import meta
 
 action = "remove"
 

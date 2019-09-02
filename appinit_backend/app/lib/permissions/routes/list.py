@@ -1,6 +1,5 @@
-from lib.imports.default import *
-import lib.permissions.users.get as get_user
-
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.permissions.users.get as get_user
 
 def call(**kwargs):
    manager = Manager()

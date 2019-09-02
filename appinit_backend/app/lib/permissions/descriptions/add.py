@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.permissions.descriptions.get as get_description
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.permissions.descriptions.get as get_description
 
 
 def call(**kwargs):

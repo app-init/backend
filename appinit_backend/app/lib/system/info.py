@@ -4,6 +4,7 @@ def call(**kwargs):
    modules = {}
 
    manager = Manager()
+   settings = Settings()
    db = manager.db("appinit")
 
    cursor = db.apis.find()
@@ -52,5 +53,17 @@ def call(**kwargs):
       output['modules'] = all_modules
    else:
       output['modules'] = modules
+
+   output['app-variables'] = {}
+   app_variable_keys = [
+      "smtp", 
+      "admins", 
+      "app-title", 
+      "issue-tracker",
+      "issue-tracker-type",
+      "reply-to"
+   ]
+   for key in app_variable_keys:
+      output['app-variables'][key] = settings.get_variable(key)
 
    return output

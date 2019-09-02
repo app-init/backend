@@ -1,6 +1,6 @@
 from appinit_backend.lib.imports import *
 from appinit_backend.lib.notifications import email
-from . import meta
+from appinit_backend.app.lib.files import meta
 
 
 def call(action, fid, **kwargs):

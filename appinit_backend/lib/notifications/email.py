@@ -3,14 +3,20 @@ import traceback
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from ..imports import *
-from . import schedule_email as send_email
+from appinit_backend.lib.imports import *
+from appinit_backend.lib.notifications import schedule_email as send_email
 
 from appinit_backend.app.lib.settings import get as get_user_settings
 from appinit_backend.app.lib.users import get as get_user
 
-internal = True
+settings = Settings()
+app_title = settings.get_variable("app-title")
+smtp_server = settings.get_variable("smtp")
+admins_email = settings.get_variable("admins")
+reply_to = settings.get_variable("reply-to")
+issue_tracker = settings.get_variable("issue-tracker")
 
+internal = True
 
 def __html_to_plaintext(html):
    from html.parser import HTMLParser
@@ -70,12 +76,12 @@ def __build_message(**kwargs):
 def __build_content(body, pre_text, post_text, p_tag):
    footer = """
          <p style="color: black; padding-top: 1%%"><hr width="100%%" color="black" size="1"></p>
-         <p style="color: black;">If you have any questions or concerns please feel free to email the CEE-Tools team at cee-tools@redhat.com.</p>
-         <p style="color: black;">Report any bugs or issues via <a href="https://gitlab.cee.redhat.com/mowens/cee-tools">gitlab</a></p>
+         <p style="color: black;">If you have any questions or concerns please feel free to email the %s team at %s.</p>
+         <p style="color: black;">Report any bugs or issues via our<a href="%s">Issue Tracker</a></p>
          <p style="color: black;"><hr width="100%%" color="black" size="1"></p>
          <p style="color: black;">Thanks,</p>
-         <p style="color: black;">CEE-Tools Team</p>
-      """
+         <p style="color: black;">%s Team</p>
+      """ % (app_title, reply_to, issue_tracker, app_title)
 
    BODY = """
          <h3 style="padding-left: 1%%; padding-top: 1%%; padding-bottom: 1%%; color: black;"><i>%s</i></h3>
@@ -95,12 +101,12 @@ def __build_content(body, pre_text, post_text, p_tag):
          <html>
             <head></head>
             <body style="color: black;">
-               <p style="color: black;">You have recieved a notification in CEE-Tools.</p>
+               <p style="color: black;">You have recieved a notification in %s.</p>
                %s
                %s
             </body>
          </html>
-      """ % (BODY, footer)
+      """ % (app_title, BODY, footer)
 
    return message
 
@@ -136,8 +142,15 @@ def __is_prod(manager):
 
 
 def __send_email(sender, to_addrs, msg):
-   s = smtplib.SMTP('smtp.corp.redhat.com')
-   s.sendmail(sender, to_addrs, msg)
+   s = smtplib.SMTP(smtp_server)
+
+   if isinstance(to_addrs, list):
+      for addr in to_addrs:
+         s.sendmail(sender, addr, msg)
+
+   else:
+      s.sendmail(sender, to_addrs, msg)
+
    s.quit()
 
 def __is_plaintext(uid):
@@ -160,7 +173,7 @@ def __send_dev_notifications(**kwargs):
    is_job = kwargs['job']
    html_msg = kwargs['html_msg']
    email = kwargs['email']
-   dev_emails = ["mowens@redhat.com", "dolee@redhat.com"]
+   dev_emails = [admins_email]
 
    __set_msg_to(html_msg, ', '.join(kwargs['to']))
 
@@ -195,7 +208,7 @@ def call(application, title, users, body, action=False, post_text=False, pre_tex
       email_body = __build_content(body, pre_text, post_text, p_tag)
 
       email = {
-          'from': 'cee-tools@redhat.com',
+          'from': reply_to,
           'subject': __get_subject(action, application, title),
           'body': email_body,
           'plaintext': __html_to_plaintext(email_body),
@@ -233,12 +246,12 @@ def call(application, title, users, body, action=False, post_text=False, pre_tex
       __send_dev_notifications(is_prod=is_prod, html_msg=html_msg, plaintext_msg=plaintext_msg, to=to, email=email, job=job)
 
    except Exception as e:
-      FROM = "cee-tools@redhat.com"
+      FROM = reply_to
 
       msg = MIMEMultipart('alternative')
-      msg['Subject'] = "CEE-Tools Failed to Send Email"
-      msg['From'] = "cee-tools@redhat.com"
-      msg['To'] = "mowens@redhat.com"
+      msg['Subject'] = "%s Failed to Send Email" % app_title
+      msg['From'] = reply_to
+      msg['To'] = admins_email
 
       BODY = """
          <h3 style="padding-left: 1%%; padding-top: 1%%; padding-bottom: 1%%; color: black;"><i>%s</i></h3>
@@ -267,4 +280,4 @@ def call(application, title, users, body, action=False, post_text=False, pre_tex
       if not is_prod:
          msg.replace_header("Subject", "DEVEL ~ " + email['subject'])
 
-      __send_email(FROM, "mowens@redhat.com", msg.as_string())
+      __send_email(FROM, admins_email, msg.as_string())

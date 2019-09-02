@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.permissions.apis.get as get_api
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.permissions.apis.get as get_api
 
 
 def call(**kwargs):

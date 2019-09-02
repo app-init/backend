@@ -1,6 +1,6 @@
-from lib.imports.default import *
-import lib.permissions.routes.get as get_route
-import lib.permissions.users.add as add_user
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.permissions.routes.get as get_route
+import appinit_backend.app.lib.permissions.users.add as add_user
 
 
 def call(**kwargs):

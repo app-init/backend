@@ -1,5 +1,5 @@
 from appinit_backend.lib.imports import *
-import lib.settings.set as set_setting
+import appinit_backend.app.lib.settings.set as set_setting
 
 def call(**kwargs):
    settings = kwargs['settings']

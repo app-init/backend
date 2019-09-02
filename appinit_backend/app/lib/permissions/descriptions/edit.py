@@ -1,5 +1,5 @@
-from lib.imports.default import *
-import lib.permissions.routes.get as get_route
+from appinit_backend.lib.imports import *
+import appinit_backend.app.lib.permissions.routes.get as get_route
 
 
 def call(**kwargs):
