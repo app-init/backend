@@ -54,7 +54,7 @@ def call(**kwargs):
    else:
       output['modules'] = modules
 
-   output['app-variables'] = {}
+   output['variables'] = {}
    app_variable_keys = [
       "smtp", 
       "admins", 
@@ -64,6 +64,6 @@ def call(**kwargs):
       "reply-to"
    ]
    for key in app_variable_keys:
-      output['app-variables'][key] = settings.get_variable(key)
+      output['variables'][key] = settings.get_variable(key)
 
    return output

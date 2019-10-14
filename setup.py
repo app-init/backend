@@ -16,7 +16,7 @@ setup(name = "app-init-backend",
       'gunicorn',
       'querystring-parser',
       'gevent',
-      'inotify',
+      'inotify'
    ],
    python_requires='>=3',
    license='MIT',

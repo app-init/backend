@@ -35,7 +35,7 @@ manager = Manager()
 settings = Settings()
 session_mgr = SessionManager(manager)
 
-modules = Modules(settings, manager)
+modules = Modules(settings=settings, manager=manager)
 
 app = Flask(__name__)
 # app.debug = True
