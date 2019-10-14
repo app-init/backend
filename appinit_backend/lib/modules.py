@@ -20,14 +20,14 @@ class Modules(object):
 
       return Modules.__instance
 
-   def __init__(self, settings, manager):
-      self.setup(manager)
+   def __init__(self, settings=None, manager=None):
+      self.setup()
 
-   def setup(self, manager):
+   def setup(self):
       self.base_path = Modules.base_path
       self.db = Modules.db
       self.settings = Modules.settings
-      self.manager = manager
+      self.manager = Modules.manager
 
    def __set_class(self, settings, manager):
       Modules.settings = settings
