@@ -61,7 +61,8 @@ def call(**kwargs):
       "app-title", 
       "issue-tracker",
       "issue-tracker-type",
-      "reply-to"
+      "reply-to",
+      "route-configs"
    ]
    for key in app_variable_keys:
       output['variables'][key] = settings.get_variable(key)

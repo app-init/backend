@@ -14,13 +14,13 @@ def call(**kwargs):
    cursor = db.settings_templates.find()
 
    output = {}
-   app_titles = {}
+   route_titles = {}
    for t in cursor:
       section = t['section']
-      app = t['application']
+      route = t['route']
 
       if "permissions" in t:
-         permissions = permission_mgr.get_application(app=app)
+         permissions = permission_mgr.get_route(route=route)
          check = [p for p in permissions if p in t['permissions'] or p == "admin"]
 
          if len(check) == 0:
@@ -30,12 +30,12 @@ def call(**kwargs):
       if section not in output:
          output[section] = {}
 
-      if app not in output[section]:
-         app_titles[app] = manager.get_application(app=app)
-         output[section][app] = []
+      if route not in output[section]:
+         route_titles[route] = manager.get_route(route=route)
+         output[section][route] = []
 
       setting = {
-         "application": app,
+         "route": route,
          "type": t['inputType'],
          "name": t['name'],
          "id": t['_id'],
@@ -59,9 +59,9 @@ def call(**kwargs):
          if setting['type'] in ["radio", "checkBox", "select"]:
             setting['values'] = t['values']
 
-      output[section][app].append(setting)
+      output[section][route].append(setting)
 
-   return {"settings": output, "appTitles": app_titles}
+   return {"settings": output, "routeTitles": route_titles}
 
 def __dynamic(template):
    manager = Manager()
